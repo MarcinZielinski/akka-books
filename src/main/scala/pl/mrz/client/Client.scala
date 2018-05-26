@@ -30,8 +30,8 @@ object Client extends App {
     "\tOrder a book: o title\n" + // returns info about order confirmation
     "\tStream a book: str title") // speed: one line per second
   while(true) {
-    val splittedInput = StdIn.readLine("Enter command: ").split(" ")
-    val (command, title) = (splittedInput(0), splittedInput(1))
-    commandMap(command).apply(title)
+    val input = StdIn.readLine("Enter command: ")
+    val (command, title) = input.splitAt(input.indexOf(' '))
+    commandMap(command).apply(title.trim)
   }
 }
