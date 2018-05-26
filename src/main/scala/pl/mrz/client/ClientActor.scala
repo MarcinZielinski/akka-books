@@ -2,13 +2,12 @@ package pl.mrz.client
 
 import akka.actor.{Actor, ActorRef}
 import akka.event.Logging
-import akka.pattern.ask
 import akka.util.Timeout
 import pl.mrz._
 
-import scala.concurrent.{Await, ExecutionContextExecutor}
-import scala.util.{Failure, Success}
+import scala.concurrent.ExecutionContextExecutor
 import scala.concurrent.duration._
+import scala.util.{Failure, Success}
 
 class ClientActor extends Actor {
   private var remoteActor: ActorRef = _
@@ -31,12 +30,11 @@ class ClientActor extends Actor {
   }
 
   override def receive: Receive = {
-    case m: SearchRequest => remoteActor ? m onComplete {
-      case Success(t) => println(t.asInstanceOf[SearchReply].message)
-      case Failure(t) => throw t
-    }
-    case m: OrderRequest => Await.result(remoteActor ? m, timeout.duration)
-    case m: StreamRequest => Await.result(remoteActor ? m, timeout.duration)
+    case m: SearchRequest => remoteActor ! m
+    case m: OrderRequest => remoteActor ! m
+    case m: StreamRequest => remoteActor ! m
+    case SearchReply(message) => println(message)
+    case OrderReply(message) => println(message)
     case StreamReply(line) => print(line)
   }
 }
