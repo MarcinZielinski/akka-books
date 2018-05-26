@@ -3,7 +3,7 @@ package pl.mrz.server.actor.worker
 import java.io.File
 
 import akka.actor.Actor
-import pl.mrz.SearchReply
+import pl.mrz.{BookFound, BookNotFound}
 import pl.mrz.server.Main
 import pl.mrz.server.actor.DbSearchRequest
 
@@ -20,8 +20,8 @@ class SearchWorker extends Actor {
         .fromFile(new File(Main.getClass.getResource(s"../book-db$dbNumber").toURI))
         .getLines
         .find(s => s.split(":")(0) == title) match {
-        case Some(_) => sender ! SearchReply("Found")
-        case None => sender ! SearchReply("Not Found")
+        case Some(book) => sender ! BookFound(book.split(":")(1).toInt)
+        case None => sender ! BookNotFound
       }
   }
 }

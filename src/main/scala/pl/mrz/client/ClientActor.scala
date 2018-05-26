@@ -33,7 +33,10 @@ class ClientActor extends Actor {
     case m: SearchRequest => remoteActor ! m
     case m: OrderRequest => remoteActor ! m
     case m: StreamRequest => remoteActor ! m
-    case SearchReply(message) => println(message)
+    case r: SearchReply => r match {
+      case BookFound(price) => println(s"Book found! Price: $price")
+      case BookNotFound => println("Book not found!")
+    }
     case OrderReply(message) => println(message)
     case StreamReply(line) => print(line)
   }
