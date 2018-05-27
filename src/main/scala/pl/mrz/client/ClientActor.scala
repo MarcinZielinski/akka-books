@@ -38,6 +38,6 @@ class ClientActor extends Actor {
       case BookNotFound => println("Book not found!")
     }
     case OrderSuccess => println("Order success!")
-    case StreamReply(line) => print(line)
+    case StreamReply(line) => println(line)
   }
 }
