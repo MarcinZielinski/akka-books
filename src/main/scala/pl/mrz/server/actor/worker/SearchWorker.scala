@@ -17,12 +17,16 @@ class SearchWorker extends Actor {
   override def receive: Receive = {
     case DbSearchRequest(workId, dbNumber, title, client) =>
       val s = sender
-      Source
-        .fromFile(new File(Main.getClass.getResource(s"../book-db$dbNumber").toURI))
-        .getLines
-        .find(s => s.split(":")(0) == title) match {
-        case Some(book) => s ! DbSearchResult(workId, BookFound(book.split(":")(1).toInt), client)
-        case None => s ! DbSearchResult(workId, BookNotFound, client)
+      try {
+        Source
+          .fromFile(new File(Main.getClass.getResource(s"../book-db$dbNumber").toURI))
+          .getLines
+          .find(s => s.split(":")(0) == title) match {
+          case Some(book) => s ! DbSearchResult(workId, BookFound(book.split(":")(1).toInt), client)
+          case None => s ! DbSearchResult(workId, BookNotFound, client)
+        }
+      } catch {
+        case _: Exception => s ! DbSearchResult(workId, BookNotFound, client)
       }
   }
 }
