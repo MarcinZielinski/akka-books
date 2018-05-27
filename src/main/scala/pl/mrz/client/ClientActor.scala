@@ -37,7 +37,7 @@ class ClientActor extends Actor {
       case BookFound(price) => println(s"Book found! Price: $price")
       case BookNotFound => println("Book not found!")
     }
-    case OrderReply(message) => println(message)
+    case OrderSuccess => println("Order success!")
     case StreamReply(line) => print(line)
   }
 }

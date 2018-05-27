@@ -1,6 +1,7 @@
 package pl.mrz.server
 
-import java.io.File
+import java.io.{File, PrintWriter}
+import java.nio.file.Paths
 
 import akka.NotUsed
 import akka.actor.{ActorSystem, Props}
@@ -11,6 +12,7 @@ import pl.mrz.client.Client.getClass
 
 import scala.concurrent._
 import scala.concurrent.duration._
+import scala.io.StdIn
 
 object Main extends App {
   val config = ConfigFactory.parseFile(new File(getClass.getResource("remote.conf").toURI))
@@ -45,4 +47,8 @@ object Main extends App {
 
   //implicit val ec: ExecutionContextExecutor = system.dispatcher
   //result.onComplete(_ ⇒ system.terminate())
+
+  if(StdIn.readLine("Type q to exit...") == "q") {
+    system.terminate()
+  }
 }

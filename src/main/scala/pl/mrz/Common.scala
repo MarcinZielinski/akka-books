@@ -6,7 +6,7 @@ case class SearchRequest(title: String) extends BookRequest
 case class OrderRequest(title: String) extends BookRequest
 case class StreamRequest(title: String) extends BookRequest
 
-case class OrderReply(message: String)
+case object OrderSuccess
 case class StreamReply(line: String)
 
 sealed trait SearchReply
